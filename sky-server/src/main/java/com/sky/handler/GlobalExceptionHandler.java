@@ -15,13 +15,24 @@ public class GlobalExceptionHandler {
 
     /**
      * 捕获业务异常
+     *
      * @param ex
      * @return
      */
     @ExceptionHandler
-    public Result exceptionHandler(BaseException ex){
+    public Result exceptionHandler(BaseException ex) {
         log.error("异常信息：{}", ex.getMessage());
         return Result.error(ex.getMessage());
+    }
+
+    @ExceptionHandler
+    public Result exceptionHandler(Exception ex) {
+        String message = ex.getMessage();
+        if (message.contains("Duplicate entry")) {
+            message = "数据已存在";
+        } else
+            message = "未知异常";
+        return Result.error(message);
     }
 
 }
